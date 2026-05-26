@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Đề thi trắc nghiệm tương tác - Toán học (MathJax chuẩn)</title>
+    <!-- MathJax 3 với cấu hình hiển thị TeX -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                tags: 'none'
+            },
+            options: {
+                ignoreHtmlClass: 'no-mathjax',
+                processHtmlClass: 'math'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+            background: #eef2f8;
+            color: #1a2c3e;
+            padding: 24px 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            padding: 28px 30px 42px;
+            transition: all 0.2s;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .sub {
+            color: #2c5a77;
+            border-left: 4px solid #2c7da0;
+            padding-left: 16px;
+            margin: 8px 0 22px 0;
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #e2edf2;
+            padding-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .stats {
+            background: #e9f0f9;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f5e7e;
+        }
+
+        .btn-download {
+            background: #1f6392;
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-download:hover {
+            background: #0c4a6e;
+            transform: translateY(-1px);
+        }
+
+        .question-card {
+            background: #fefefe;
+            border-radius: 28px;
+            margin-bottom: 32px;
+            padding: 20px 24px 22px 24px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e3eef8;
+            transition: all 0.2s;
+        }
+
+        .question-title {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .q-num {
+            background: #e2edf7;
+            color: #1a5d7d;
+            padding: 4px 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .q-tag {
+            background: #eef3fc;
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #2d6a8f;
+            font-weight: 500;
+        }
+
+        .question-text {
+            font-size: 1.08rem;
+            margin: 14px 0 18px 0;
+            padding: 4px 0 4px 12px;
+            border-left: 4px solid #80b3d0;
+            color: #0b2f42;
+            font-weight: 500;
+            background: #fafdff;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 18px 0 14px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px;
+            border-radius: 60px;
+            background: #f9fbfe;
+            border: 1px solid #dfe9f2;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .option-item:hover {
+            background: #eef3fc;
+            border-color: #bbd2e8;
+        }
+
+        .option-radio {
+            accent-color: #2c7da0;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 0.98rem;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        /* highlight trạng thái */
+        .option-correct-highlight {
+            background: #d4f0da !important;
+            border-color: #2b7e3a !important;
+            box-shadow: 0 0 0 2px rgba(43, 126, 58, 0.3);
+        }
+
+        .option-wrong-highlight {
+            background: #ffe2dc !important;
+            border-color: #bc3f2e !important;
+            box-shadow: 0 0 0 2px rgba(188, 63, 46, 0.3);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            background: #f8fafd;
+            border-radius: 24px;
+            padding: 14px 20px;
+            font-size: 0.92rem;
+            border-left: 6px solid #4c9fcf;
+            transition: 0.2s;
+        }
+
+        .feedback-answer {
+            font-weight: 700;
+            color: #1a5f7a;
+            margin-bottom: 6px;
+        }
+
+        .feedback-explanation {
+            margin: 10px 0 6px;
+            color: #1f3b4c;
+        }
+
+        .feedback-tip {
+            background: #fff7eb;
+            padding: 8px 14px;
+            border-radius: 20px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #b45f06;
+            border-left: 3px solid #f7b32b;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.78rem;
+            color: #6c8eae;
+            border-top: 1px solid #e2edf4;
+            padding-top: 18px;
+        }
+
+        @media (max-width: 680px) {
+            .container {
+                padding: 16px;
+            }
+            .question-card {
+                padding: 14px;
+            }
+            .option-item {
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <h1>📐 Đề thi trắc nghiệm tổng hợp</h1>
+            <div class="sub">✨ 20 câu hỏi (5 lý thuyết + 15 bài tập: Dễ – TB – Khó) | Giải thích + Mẹo nhanh</div>
+        </div>
+        <div class="toolbar">
+            <span class="stats">⚡ Tương tác: chọn đáp án → hiện màu & lời giải</span>
+            <button class="btn-download" id="downloadBtn">📥 Tải file HTML (đề thi)</button>
+        </div>
+    </div>
+
+    <div id="questions-container"></div>
+    <footer>💡 Mỗi câu chọn một đáp án. Nếu đúng → xanh, sai → đỏ, kèm đáp án + giải thích + mẹo. Công thức toán hiển thị với MathJax.</footer>
+</div>
+
+<script>
+    // -------------------- DỮ LIỆU 20 CÂU HỎI CHUẨN (có hỗ trợ LaTeX) --------------------
+    const questionsData = [
+        // 5 LÝ THUYẾT
+        { type: "Lý thuyết", level: "", text: "Định nghĩa giới hạn hàm số: $\\displaystyle \\lim_{x \\to a} f(x) = L$ có nghĩa là:", 
+          options: ["Với mọi $\\varepsilon > 0$, tồn tại $\\delta > 0$ sao cho nếu $0<|x-a|<\\delta$ thì $|f(x)-L|<\\varepsilon$", 
+                    "Với mọi $\\delta > 0$, tồn tại $\\varepsilon >0$ sao cho ...", 
+                    "Giá trị hàm số tiến đến $L$ khi $x$ tiến ra vô cùng", 
+                    "Giá trị hàm số bằng $L$ tại $x=a$"], 
+          correct: 0, explanation: "Đây là định nghĩa epsilon – delta chính xác: với mọi ε dương bé tùy ý, tìm được δ để khoảng cách giá trị hàm số nhỏ hơn ε.", 
+          tip: "Ghi nhớ: ε (epsilon) kiểm soát khoảng cách trên trục tung, δ (delta) kiểm soát trên trục hoành." },
+        { type: "Lý thuyết", level: "", text: "Đạo hàm của hàm số $y = \\sin x$ là:", 
+          options: ["$\\cos x$", "$-\\cos x$", "$\\cot x$", "$\\sin x$"], 
+          correct: 0, explanation: "Công thức đạo hàm cơ bản: $\\frac{d}{dx}\\sin x = \\cos x$.", tip: "Mẹo: sin → cos (giữ dấu), cos → -sin." },
+        { type: "Lý thuyết", level: "", text: "Tích phân xác định $\\displaystyle \\int_{a}^{b} f(x) \\, dx$ biểu diễn:", 
+          options: ["Diện tích hình thang cong giới hạn bởi $y=f(x)$, trục $Ox$, $x=a$, $x=b$ (có dấu)", 
+                    "Độ dài cung đường cong", "Giá trị trung bình của $f$", "Nguyên hàm của $f$ tại $b$ trừ $a$"], 
+          correct: 0, explanation: "Theo định nghĩa hình học, tích phân xác định cho diện tích đại số giữa đồ thị và trục hoành.", tip: "Nếu $f(x)\\ge 0$ trên $[a,b]$ thì tích phân chính là diện tích." },
+        { type: "Lý thuyết", level: "", text: "Đơn vị ảo $i$ có tính chất:", 
+          options: ["$i^2 = -1$", "$i^2 = 1$", "$i = \\sqrt{-1}$ và $i^2 = 1$", "$i = -1$"], 
+          correct: 0, explanation: "Trong số phức, $i$ được định nghĩa bởi $i^2 = -1$.", tip: "Chu kỳ: $i^3 = -i$, $i^4 = 1$." },
+        { type: "Lý thuyết", level: "", text: "Hàm số $f(x)$ liên tục tại điểm $x_0$ khi:", 
+          options: ["$\\lim_{x\\to x_0} f(x) = f(x_0)$", "$\\lim_{x\\to x_0^+} f(x) = \\lim_{x\\to x_0^-} f(x)$", "$f(x_0)$ tồn tại", "Cả ba điều kiện trên"], 
+          correct: 3, explanation: "Liên tục tại $x_0$ cần: (1) $f(x_0)$ xác định, (2) tồn tại giới hạn, (3) giới hạn bằng $f(x_0)$.", tip: "Thiếu một trong ba → gián đoạn." },
+        
+        // 5 BÀI TẬP DỄ
+        { type: "Bài tập", level: "Dễ", text: "Tính $\\displaystyle \\lim_{x \\to 0} \\frac{\\sin x}{x}$", 
+          options: ["$0$", "$1$", "Không tồn tại", "$\\infty$"], correct: 1, 
+          explanation: "Giới hạn cơ bản: $\\lim_{x\\to0}\\frac{\\sin x}{x}=1$.", tip: "Có thể dùng L'Hopital hoặc khai triển $\\sin x \\sim x$." },
+        { type: "Bài tập", level: "Dễ", text: "Đạo hàm của $f(x) = x^2 + 3x$ là:", 
+          options: ["$2x+3$", "$x^2+3$", "$2x$", "$2x+3x$"], correct: 0, 
+          explanation: "$(x^2)' = 2x$, $(3x)' = 3$ → $2x+3$.", tip: "$(x^n)' = n x^{n-1}$." },
+        { type: "Bài tập", level: "Dễ", text: "Tính $\\displaystyle \\int 2x \\, dx$", 
+          options: ["$x^2 + C$", "$2x^2 + C$", "$x^2$", "$\\frac{x^2}{2}+C$"], correct: 0, 
+          explanation: "Nguyên hàm $\\int 2x dx = x^2 + C$ vì $(x^2)' = 2x$.", tip: "Luôn thêm hằng số $C$ với nguyên hàm bất định." },
+        { type: "Bài tập", level: "Dễ", text: "Giải phương trình $x^2 - 5x + 6 = 0$", 
+          options: ["$x = 2,\\, x = 3$", "$x = -2,\\, x = -3$", "$x = 1,\\, x = 6$", "$x = -1,\\, x = 6$"], correct: 0, 
+          explanation: "Phân tích: $(x-2)(x-3)=0$ → nghiệm $x=2$ hoặc $x=3$.", tip: "Nhẩm tổng $S=5$, tích $P=6$ → hai số $2$ và $3$." },
+        { type: "Bài tập", level: "Dễ", text: "Rút gọn biểu thức $(a+b)^2 - (a-b)^2$", 
+          options: ["$4ab$", "$2a^2+2b^2$", "$2ab$", "$0$"], correct: 0, 
+          explanation: "$(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, hiệu bằng $4ab$.", tip: "Dùng hằng đẳng thức $A^2-B^2=(A-B)(A+B) = (2a)(2b)=4ab$." },
+        
+        // 5 BÀI TẬP TRUNG BÌNH
+        { type: "Bài tập", level: "Trung bình", text: "Tính $\\displaystyle \\lim_{x \\to \\infty} \\frac{3x^2+2x+1}{x^2+5}$", 
+          options: ["$3$", "$0$", "$2$", "$\\infty$"], correct: 0, 
+          explanation: "Chia tử và mẫu cho $x^2$: $\\frac{3+2/x+1/x^2}{1+5/x^2} \\to 3$.", tip: "Giới hạn hữu tỷ bậc cao nhất → tỉ số hệ số bậc cao nhất." },
+        { type: "Bài tập", level: "Trung bình", text: "Đạo hàm của $f(x)=e^{2x}\\sin x$ là:", 
+          options: ["$e^{2x}(2\\sin x + \\cos x)$", "$e^{2x}(\\sin x + 2\\cos x)$", "$2e^{2x}\\cos x$", "$e^{2x}\\cos x$"], correct: 0, 
+          explanation: "Quy tắc nhân: $f' = (e^{2x})'\\sin x + e^{2x}(\\sin x)' = 2e^{2x}\\sin x + e^{2x}\\cos x = e^{2x}(2\\sin x+\\cos x)$.", tip: "$(uv)'=u'v+uv'$." },
+        { type: "Bài tập", level: "Trung bình", text: "Tính $\\displaystyle \\int_{0}^{1} x e^{x^2} \\, dx$", 
+          options: ["$\\frac{e-1}{2}$", "$e-1$", "$\\frac{e^2-1}{2}$", "$\\frac{e}{2}$"], correct: 0, 
+          explanation: "Đặt $u=x^2$, $du=2xdx$ → $\\frac12 \\int_0^1 e^u du = \\frac12 (e-1)$.", tip: "Nhận dạng $xdx$ liên quan đến vi phân của $x^2$." },
+        { type: "Bài tập", level: "Trung bình", text: "Giải bất phương trình $\\log_2(x-1) > 3$", 
+          options: ["$x > 9$", "$x > 8$", "$1 < x < 9$", "$x > 7$"], correct: 0, 
+          explanation: "Điều kiện $x>1$. $\\log_2(x-1)>3 \\Leftrightarrow x-1 > 2^3 =8 \\Rightarrow x>9$.", tip: "Cơ số $2>1$ giữ nguyên chiều bất phương trình." },
+        { type: "Bài tập", level: "Trung bình", text: "Môđun của số phức $z = 3+4i$ là:", 
+          options: ["$5$", "$7$", "$25$", "$1$"], correct: 0, 
+          explanation: "$|z| = \\sqrt{3^2+4^2} = \\sqrt{25}=5$.", tip: "Bộ số (3,4,5) quen thuộc." },
+        
+        // 5 BÀI TẬP KHÓ
+        { type: "Bài tập", level: "Khó", text: "Tính $\\displaystyle \\lim_{x \\to 0} \\frac{\\tan x - \\sin x}{x^3}$", 
+          options: ["$\\frac12$", "$0$", "$1$", "$\\frac13$"], correct: 0, 
+          explanation: "Khai triển Taylor: $\\tan x = x + \\frac{x^3}{3}+O(x^5)$, $\\sin x = x - \\frac{x^3}{6}+O(x^5)$ → tử $\\sim \\frac{x^3}{2}$ → giới hạn $\\frac12$.", tip: "Hoặc dùng L'Hopital ba lần, hoặc biến đổi $\\tan x - \\sin x = \\sin x(\\frac{1}{\\cos x}-1)$." },
+        { type: "Bài tập", level: "Khó", text: "Đạo hàm cấp 2 của $y = \\ln(x^2+1)$ tại $x=1$ là:", 
+          options: ["$-\\frac{1}{2}$", "$\\frac12$", "$0$", "$-\\frac{2}{5}$"], correct: 2, 
+          explanation: "$y' = \\frac{2x}{x^2+1}$, $y'' = \\frac{2(x^2+1)-2x\\cdot 2x}{(x^2+1)^2} = \\frac{2-2x^2}{(x^2+1)^2}$. Tại $x=1$: $y''(1)=\\frac{0}{4}=0$.", tip: "Nhớ đạo hàm $\\ln u = u'/u$, rồi đạo hàm thương." },
+        { type: "Bài tập", level: "Khó", text: "Diện tích hình phẳng giới hạn bởi $y=x^2$ và $y=2x$ là:", 
+          options: ["$\\frac{4}{3}$", "$\\frac{8}{3}$", "$2$", "$\\frac{5}{3}$"], correct: 0, 
+          explanation: "Hoành độ giao điểm: $x^2=2x \\Rightarrow x=0, x=2$. Diện tích $\\int_0^2 (2x - x^2)dx = \\left[x^2 - \\frac{x^3}{3}\\right]_0^2 = 4 - \\frac{8}{3} = \\frac{4}{3}$.", tip: "Vẽ đồ thị, lấy hàm trên trừ hàm dưới." },
+        { type: "Bài tập", level: "Khó", text: "Giải phương trình $z^2 + 2z + 5 = 0$ trên tập số phức.", 
+          options: ["$-1 \\pm 2i$", "$1 \\pm 2i$", "$-2 \\pm i$", "$-1 \\pm i$"], correct: 0, 
+          explanation: "$\\Delta' = 1 - 5 = -4$, căn bậc hai $\\pm 2i$ → nghiệm $z = -1 \\pm 2i$.", tip: "Với $\\Delta<0$, nghiệm phức liên hợp $\\alpha \\pm \\beta i$." },
+        { type: "Bài tập", level: "Khó", text: "Tính $\\displaystyle \\int \\frac{dx}{x^2+2x+5}$", 
+          options: ["$\\frac12 \\arctan\\frac{x+1}{2} + C$", "$\\arctan(x+1)+C$", "$\\frac12\\ln|x^2+2x+5|+C$", "$\\frac12\\arctan\\frac{x+2}{2}+C$"], correct: 0, 
+          explanation: "Viết $x^2+2x+5 = (x+1)^2+4$. Đặt $u=x+1$: $\\int \\frac{du}{u^2+2^2} = \\frac12 \\arctan\\frac{u}{2}+C$.", tip: "Công thức $\\int \\frac{dx}{x^2+a^2} = \\frac1a\\arctan\\frac{x}{a}+C$." }
+    ];
+
+    // Đảm bảo mỗi câu có id ảo, gán index để dễ xử lý
+    // Hàm render toàn bộ
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+        questionsData.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${idx}`;
+            
+            // header
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'question-title';
+            const numSpan = document.createElement('span');
+            numSpan.className = 'q-num';
+            numSpan.innerText = `Câu ${idx+1}`;
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'q-tag';
+            tagSpan.innerText = q.type + (q.level ? ` • ${q.level}` : '');
+            titleDiv.appendChild(numSpan);
+            titleDiv.appendChild(tagSpan);
+            
+            // nội dung câu hỏi (hỗ trợ LaTeX)
+            const qText = document.createElement('div');
+            qText.className = 'question-text';
+            qText.innerHTML = q.text;
+            
+            // options container
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'options';
+            const groupName = `group_${idx}`;
+            const optionElements = [];
+            q.options.forEach((opt, optIdx) => {
+                const optItem = document.createElement('div');
+                optItem.className = 'option-item';
+                optItem.setAttribute('data-q', idx);
+                optItem.setAttribute('data-opt', optIdx);
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = groupName;
+                radio.value = optIdx;
+                radio.className = 'option-radio';
+                radio.id = `q${idx}_opt${optIdx}`;
+                
+                const span = document.createElement('span');
+                span.className = 'option-text';
+                span.innerHTML = opt;   // chứa LaTeX
+                
+                optItem.appendChild(radio);
+                optItem.appendChild(span);
+                
+                // sự kiện click cho cả item
+                optItem.addEventListener('click', (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const inp = optItem.querySelector('input');
+                        if (inp) inp.checked = true;
+                        const changeEv = new Event('change', { bubbles: true });
+                        inp.dispatchEvent(changeEv);
+                    }
+                });
+                optsDiv.appendChild(optItem);
+                optionElements.push(optItem);
+            });
+            
+            // feedback
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = `fb-${idx}`;
+            feedbackDiv.innerHTML = `<em>⏳ Chưa có lựa chọn. Hãy chọn một đáp án.</em>`;
+            
+            card.appendChild(titleDiv);
+            card.appendChild(qText);
+            card.appendChild(optsDiv);
+            card.appendChild(feedbackDiv);
+            container.appendChild(card);
+            
+            // Gắn sự kiện change cho các radio
+            const radios = card.querySelectorAll(`input[name="${groupName}"]`);
+            radios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const selectedVal = parseInt(radio.value);
+                    handleAnswer(idx, selectedVal, optionElements, feedbackDiv);
+                });
+            });
+        });
+        
+        // Sau khi render toàn bộ, yêu cầu MathJax xử lý công thức
+        if (window.MathJax) {
+            MathJax.typesetPromise().catch(err => console.warn("MathJax error:", err));
+        }
+    }
+    
+    // Xử lý khi chọn đáp án
+    function handleAnswer(qIdx, selectedIdx, optionDivs, feedbackDiv) {
+        const q = questionsData[qIdx];
+        const isCorrect = (selectedIdx === q.correct);
+        
+        // reset highlight
+        optionDivs.forEach(div => {
+            div.classList.remove('option-correct-highlight', 'option-wrong-highlight');
+        });
+        const chosenDiv = optionDivs[selectedIdx];
+        if (isCorrect) {
+            chosenDiv.classList.add('option-correct-highlight');
+        } else {
+            chosenDiv.classList.add('option-wrong-highlight');
+        }
+        
+        // Lấy đáp án đúng dạng chữ
+        const correctLetter = String.fromCharCode(65 + q.correct);
+        const correctAnswerText = q.options[q.correct];
+        
+        let feedbackHtml = '';
+        if (isCorrect) {
+            feedbackHtml = `<div style="color:#1f7a3b; font-weight:600;">✅ Chính xác! 🎉</div>`;
+        } else {
+            feedbackHtml = `<div style="color:#bc3f2e; font-weight:500;">❌ Sai rồi. Đáp án đúng là ${correctLetter}. ${correctAnswerText}</div>`;
+        }
+        feedbackHtml += `
+            <div class="feedback-answer">📌 Đáp án đúng: ${correctLetter}. ${correctAnswerText}</div>
+            <div class="feedback-explanation"><strong>📖 Giải thích:</strong> ${q.explanation}</div>
+            <div class="feedback-tip">💡 <strong>Mẹo làm nhanh:</strong> ${q.tip}</div>
+        `;
+        feedbackDiv.innerHTML = feedbackHtml;
+        
+        // MathJax render lại nội dung feedback (có thể chứa công thức)
+        if (window.MathJax) {
+            MathJax.typesetPromise([feedbackDiv]).catch(err => console.warn("MathJax update error", err));
+        }
+    }
+    
+    // Chức năng tải file HTML (toàn bộ tài nguyên hiện tại)
+    function downloadFullHTML() {
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob(['<!DOCTYPE html>\n' + htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'de_thi_trac_nghiem_mathjax.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    // Khởi chạy
+    window.addEventListener('DOMContentLoaded', () => {
+        renderQuestions();
+        const downloadBtn = document.getElementById('downloadBtn');
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadFullHTML);
+    });
+</script>
+</body>
+</html>
